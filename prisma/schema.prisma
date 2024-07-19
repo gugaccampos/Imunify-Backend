@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Usuarios {
-  id    Int     @default(autoincrement()) @id
+  id    String   @id @default(uuid())
   email String  @unique
   nome  String? // not null
   senha String // not null
@@ -16,10 +16,10 @@ model Usuarios {
 }
 
 model Agendamentos {
-  id    Int     @default(autoincrement()) @id
+  id    String   @id @default(uuid())
   data  DateTime // not null
 
   // FK para Usuarios
   idUsuario String
-  usuario   Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  usuario   Usuarios @relation(fields: [idUsuario], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
