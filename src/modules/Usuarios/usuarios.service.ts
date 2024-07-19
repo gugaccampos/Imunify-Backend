@@ -6,21 +6,33 @@ import { UsuariosDto } from './dto/usuarios.dto';
 export class UsuariosService {
     constructor(private prisma: PrismaService) {}
 
+    existeEmail (email: string){
+        
+      return this.prisma.usuarios.findFirst({
+        where: {
+          email: email
+        }
+      })
+    }
+
+    existeId (id: string){
+        
+      return this.prisma.usuarios.findFirst({
+        where: {
+          id: id
+        }
+      })
+    }
+
     async create(data: UsuariosDto) {
 
         //verificando se usuarios já existe
        
-        const usuariosExiste = this.prisma.usuarios.findFirst({
-          where:{
-            id: data.id
-          }
-        })
+        const usuariosExiste = await this.existeEmail(data.email);
     
         if (usuariosExiste) {
           throw new Error('Não é possível criar o mesmo usuarios.')
         }
-        
-        
     
         const usuarios = await this.prisma.usuarios.create({
           data
@@ -30,11 +42,7 @@ export class UsuariosService {
       }
 
     async findById(id: string) {
-        const usuariosExiste = this.prisma.usuarios.findFirst({
-          where:{
-            id: id
-          }
-        })
+        const usuariosExiste = await this.existeId(id);
     
         if (!usuariosExiste) {
           throw new Error('Não é possível encontrar um usuarios que NÃO EXISTE.')
@@ -44,11 +52,7 @@ export class UsuariosService {
       }
 
     async findByEmail(email: string) {
-        const usuariosExiste = this.prisma.usuarios.findFirst({
-          where:{ 
-            email: email
-          }
-        })
+        const usuariosExiste = await this.existeEmail(email);
   
         if (!usuariosExiste) {
           throw new Error('Não é possível encontrar um usuarios que NÃO EXISTE.')
@@ -58,17 +62,13 @@ export class UsuariosService {
       }
 
     async remove(idUs: string) {
-        const usuariosExiste = this.prisma.usuarios.findFirst({
-          where:{
-            id: idUs
-          }
-        })
+        const usuariosExiste = await this.existeId(idUs);
 
         if (!usuariosExiste) {
           throw new Error('Não é possível remover um usuarios que NÃO EXISTE.')
         }
 
-        const id = (await usuariosExiste).id; 
+        const id = usuariosExiste.id; 
     
         return await this.prisma.usuarios.delete({
           where: {
@@ -79,17 +79,13 @@ export class UsuariosService {
     }
 
     async update(idUs:string, data: UsuariosDto) {
-      const usuariosExiste = this.prisma.usuarios.findFirst({
-        where:{
-          id: idUs
-        }
-      })
+      const usuariosExiste = await this.existeId(idUs);
   
       if (!usuariosExiste) {
         throw new Error('Não é possível atualizar um usuarios que NÃO EXISTE.')
       }
       
-      const id = (await usuariosExiste).id;
+      const id = usuariosExiste.id;
 
       return await this.prisma.usuarios.update({
         data,
