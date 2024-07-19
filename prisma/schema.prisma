@@ -7,9 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
+model Usuarios {
+  id    String   @id @default(uuid())
   email String  @unique
-  name  String? // not null
-  password String  @unique
+  nome  String? // not null
+  senha String // not null
+  agendamentos Agendamentos[]
+}
+
+model Agendamentos {
+  id    String   @id @default(uuid())
+  data  DateTime // not null
+
+  // FK para Usuarios
+  idUsuario String
+  usuario   Usuarios @relation(fields: [idUsuario], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
