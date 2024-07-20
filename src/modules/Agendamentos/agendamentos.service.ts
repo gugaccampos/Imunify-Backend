@@ -41,17 +41,14 @@ export class AgendamentosService {
         return agendamentos;
       }
 
-    async findById(id: string) {
-        const agendamentosExiste = await this.existeId(id);
-    
-        if (!agendamentosExiste) {
-          throw new Error('Agendamento que não encontrado.')
-        }
-    
-        return agendamentosExiste;
+    async findAll() {
+      console.log('entrou')
+      const todos = await this.prisma.agendamentos.findMany();
+      return todos;
       }
 
     async findByUser(idUs: string) {
+        console.log('entrou2')
         const agendamentosExiste = await this.existeUS(idUs);
     
         if (!agendamentosExiste) {

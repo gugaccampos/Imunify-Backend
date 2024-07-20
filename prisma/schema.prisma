@@ -8,18 +8,22 @@ datasource db {
 }
 
 model Usuarios {
-  id    String   @id @default(uuid())
-  email String  @unique
-  nome  String? // not null
-  senha String // not null
+  id           String   @id @default(uuid())
+  email        String   @unique
+  nome         String  // not null
+  senha        String   // not null
+  nascimento   DateTime // not null
   agendamentos Agendamentos[]
 }
 
 model Agendamentos {
-  id    String   @id @default(uuid())
-  data  DateTime // not null
+  id           String   @id @default(uuid())
+  nome         String   // not null
+  data_hora    DateTime // not null
+  nascimento   DateTime // not null
+  realizado    String?
 
   // FK para Usuarios
-  idUsuario String
-  usuario   Usuarios @relation(fields: [idUsuario], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  idUsuario    String
+  usuario      Usuarios @relation(fields: [idUsuario], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

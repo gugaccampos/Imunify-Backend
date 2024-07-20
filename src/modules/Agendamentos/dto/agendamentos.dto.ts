@@ -1,5 +1,8 @@
 export class AgendamentosDto {
     id: string;
-    data: string; //DateTime
+    nome: string;
+    data_hora: string; //DateTime
+    nascimento: string; //DateTime
+    realizado: string;
     idUsuario: string;
 }

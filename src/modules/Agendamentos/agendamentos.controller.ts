@@ -13,9 +13,9 @@ export class AgendamentosController {
     }
 
     // pegar agendamento por id
-    @Get(':id')
-    async findById(@Param('id') id: string) {
-      return this.agendamentosService.findById(id);
+    @Get('/todos')
+    async findAll() {
+      return this.agendamentosService.findAll();
     }
 
     // pegar agendamentos du usuario

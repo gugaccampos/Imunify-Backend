@@ -9,13 +9,15 @@ export class UsuariosController {
     //criar usuario
     @Post()
     async create(@Body() data: UsuariosDto){
+        console.log(data)
+        console.log(data.email)
         return this.usuariosService.create(data);
     }
 
     //pegar usuarios      
-    @Get('/email/:email')
-    async findOne(@Param('email') email: string) {
-      return this.usuariosService.findByEmail(email);
+    @Get('/login/:email/:senha')
+    async findByLogin(@Param('email') email: string, @Param('senha') senha: string) {
+      return this.usuariosService.findByLogin(email, senha);
     }
 
     // pegar usuarios por id
