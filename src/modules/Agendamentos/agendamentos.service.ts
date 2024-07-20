@@ -15,6 +15,16 @@ export class AgendamentosService {
       })
     }
 
+    existeAG (idUs: string, data: string){
+        
+      return this.prisma.agendamentos.findFirst({
+        where: {
+          idUsuario: idUs,
+          data_hora: data
+        }
+      })
+    }
+
     existeUS (idUs: string){
         
       return this.prisma.agendamentos.findFirst({
@@ -27,9 +37,9 @@ export class AgendamentosService {
     async create(data: AgendamentosDto) {
 
         //verificando se o agendamento já existe
-       
-        const agendamentosExiste = await this.existeId(data.id);
-    
+        
+        const agendamentosExiste = await this.existeAG(data.idUsuario, data.data_hora);
+
         if (agendamentosExiste) {
           throw new Error('Não é possível criar o mesmo agendamento.')
         }
